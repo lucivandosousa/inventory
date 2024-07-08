@@ -56,6 +56,11 @@ export default function EditItem() {
         <h1 className="mb-8 text-2xl font-bold">Dashboard</h1>
         <ul className="list-none">
           <li className="mb-4">
+            <Link href="/" legacyBehavior>
+              <a className="block p-2 rounded hover:bg-blue-700">Início</a>
+            </Link>
+          </li>
+          <li className="mb-4">
             <Link href="/items" legacyBehavior>
               <a className="block p-2 rounded hover:bg-blue-700">Listagem de Itens</a>
             </Link>
