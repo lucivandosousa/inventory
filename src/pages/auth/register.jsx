@@ -1,34 +1,28 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { loginUser } from '../../services/api';
+import { registerUser } from '../../services/api';
 
-export default function Login() {
+export default function Register() {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleLogin = async (e) => {
-    e.preventDefault()
+  const handleRegister = async (e) => {
+    e.preventDefault();
     try {
-      const data = await loginUser({ email, password })
-      localStorage.setItem('token', data.token)
-      const storedToken = localStorage.getItem('token')
-      router.push('/')
+      await registerUser({ email, password })
+      router.push('/auth')
     } catch (error) {
-      setError('Email ou senha incorretos');
+      setError('Email já registrado')
     }
-  }
-
-  const navigateToRegister = () => {
-    router.push('/auth/register')
   }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-6 rounded shadow">
-        <h2 className="mb-6 text-2xl font-bold">Login</h2>
-        <form onSubmit={handleLogin}>
+        <h2 className="mb-6 text-2xl font-bold">Registrar</h2>
+        <form onSubmit={handleRegister}>
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-bold mb-2">Email</label>
             <input
@@ -52,14 +46,17 @@ export default function Login() {
             />
           </div>
           {error && <p className="text-red-500">{error}</p>}
-          <button type="submit" className="p-2 rounded bg-blue-500 text-white hover:bg-blue-400">
-            Entrar
-          </button>
+          <div className="flex space-x-4">
+            <button type="submit" className="p-2 rounded bg-blue-500 text-white hover:bg-blue-400">
+              Registrar
+            </button>
+            <button className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600" onClick={() => router.push('/auth')}>
+              Cancelar
+            </button>
+          </div>
         </form>
-        <button onClick={navigateToRegister} className="mt-4 p-2 rounded text-green-600">
-          Não tem uma conta? Cadastre-se
-        </button>
       </div>
     </div>
   )
 }
+

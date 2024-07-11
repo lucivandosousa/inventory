@@ -1,82 +1,57 @@
-// src/pages/items/edit/[id].js
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { fetchItem, updateItem } from '../../../services/api';
-import Link from 'next/link';
+import MenuNavigation from '@/components/MenuNavigation';
 
 export default function EditItem() {
-  const router = useRouter();
-  const { id } = router.query;
+  const router = useRouter()
+  const { id } = router.query
   const [item, setItem] = useState({
     name: '',
     description: '',
     quantity: 0,
     category: '',
     image: ''
-  });
+  })
 
   useEffect(() => {
     if (id) {
       const getItem = async () => {
         try {
-          const data = await fetchItem(id);
-          setItem(data);
+          const data = await fetchItem(id)
+          setItem(data)
         } catch (error) {
-          console.error('Erro ao buscar item:', error);
+          console.error('Erro ao buscar item:', error)
         }
-      };
+      }
 
-      getItem();
+      getItem()
     }
-  }, [id]);
+  }, [id])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setItem((prevItem) => ({
       ...prevItem,
       [name]: name === 'quantity' ? Number(value) : value
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await updateItem(id, item);
-      router.push(`/items/${id}`);
+      await updateItem(id, item)
+      router.push(`/items/${id}`)
     } catch (error) {
-      console.error('Erro ao atualizar item:', error);
+      console.error('Erro ao atualizar item:', error)
     }
-  };
+  }
 
-  if (!item) return <p>Carregando...</p>;
+  if (!item) return <p>Carregando...</p>
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <nav className="w-64 h-screen p-6 bg-blue-800 text-white">
-        <h1 className="mb-8 text-2xl font-bold">Dashboard</h1>
-        <ul className="list-none">
-          <li className="mb-4">
-            <Link href="/" legacyBehavior>
-              <a className="block p-2 rounded hover:bg-blue-700">Início</a>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link href="/items" legacyBehavior>
-              <a className="block p-2 rounded hover:bg-blue-700">Listagem de Itens</a>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link href="/items/create" legacyBehavior>
-              <a className="block p-2 rounded hover:bg-blue-700">Cadastro de Itens</a>
-            </Link>
-          </li>
-          <li className="mb-4">
-            <Link href="/auth" legacyBehavior>
-              <a className="block p-2 rounded hover:bg-blue-700">Sair</a>
-            </Link>
-          </li>
-        </ul>
-      </nav>
+      <MenuNavigation />
       <main className="flex-1 p-6">
         <h2 className="mb-6 text-3xl font-bold">Editar Item</h2>
         <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow">
@@ -141,6 +116,6 @@ export default function EditItem() {
         </form>
       </main>
     </div>
-  );
-};
+  )
+}
 
